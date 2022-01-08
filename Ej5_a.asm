@@ -1,7 +1,7 @@
-! Escriba un programa en código ARC
-! que declare dos variables de 32 bits en memoria RAM y q' 
-! intercambie el contenido entre ellas. Utilizar el minimo num de
-! registros que le sea posible.
+! Un programa ARC declara dos variables y luego invoca una rutina que obtiene la suma de ambas.
+! Escribir tres versiones del programa principal y de la rutina considerando diferentes convenciones
+! para el pasaje de parámetros -> por registros
+
 
 .begin
 .org 2048
