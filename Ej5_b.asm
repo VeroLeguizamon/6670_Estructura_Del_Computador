@@ -22,7 +22,7 @@
 	y: 2 ! variable 2
 	z: 0 ! suma de ambas variables
 
-	sumar: ! recibe los parametos por registros
+	sumar: ! recibe los parametos por pila
 		! lo devuelve en %r3
 		
 		st %r14, %r1 ! escribo un dato del registro 14 -> 1
