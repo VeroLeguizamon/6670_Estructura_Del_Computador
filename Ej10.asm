@@ -1,8 +1,8 @@
 ! recibe porpila dos numeros en complemento a2 y determina si su
 ! suma es representable en 32 bits
 
-! 1 -> si 
-! 4 -> no
+! 0 -> si 
+! -1 -> no
 
 .begin
 .org 2048
@@ -37,21 +37,19 @@ es_representable:
 	bvs no_es
 
 si_es: 
-	add %r0, 1, %r20
+	ld %r0, %r20
 	st %r20, %r14
 	ba volver
 no_es:
-	! para que me devuelva 0 st %r0, %r14 pero para entenderlo mejor
-	! hago que me devuelva otro numero
-	add %r0, 4, %r20
+	add %r0, -1, %r20
 	st %r20, %r14 ! cargo en el stack
 	ba volver
 
 volver: 
 	jmpl %r15 + 4, %r0
 
-x : 2147483647
-y : 214748364
+x :1! 2147483647
+y :2! 214748364
 stack: 6000
 resultado : 3
 
