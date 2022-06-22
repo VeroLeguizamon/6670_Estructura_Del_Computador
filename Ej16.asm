@@ -36,9 +36,9 @@
 !r17 -> comparador signo
 
 comparador: 
-	st %r14, %r20
+	ld %r14, %r21
 	add %r14, 4, %r14
-	st %r14, %r21
+	ld %r14, %r20
 	add %r14, 4, %r14
 	
 	st %r15, %r29 ! me guardo el retorno
@@ -51,41 +51,61 @@ separar_signo:
 	and %r21, %r17, %r23 ! guardo signo y
 
 separar_exponente:
-	ld [signo], %r18
-	and %r20, %r17, %r24 ! guardo exponente x
-	and %r21, %r17, %r25 ! guardo exponente y
+	ld [exponente], %r18
+	and %r20, %r18, %r24 ! guardo exponente x
+	and %r21, %r18, %r25 ! guardo exponente y
 
 separar_mantiza:
-	ld [signo], %r19
-	and %r20, %r17, %r26 ! guardo mantiza x
-	and %r21, %r17, %r27 ! guardo mantiza y
+	ld [mantiza], %r19
+	and %r20, %r19, %r26 ! guardo mantiza x
+	and %r21, %r19, %r27 ! guardo mantiza y
 
 comparar_signos:
 	subcc %r22, %r23, %r0 ! veo los flags
-	be comprar_exponente
-	
-comprar_exponentes:
+	be comparar_exponentes
+	bgu mayor_prim
+	ba mayor_seg
+
+comparar_exponentes:
 	subcc %r24, %r25, %r0 ! veo los flags
-	be comparar_matiza
+	be comparar_mantiza
+	bgu mayor_prim
+	ba mayor_seg
 
 comparar_mantiza :
 	subcc %r26, %r27, %r0 !veo flags
 	be iguales
+	bgu mayor_prim
+	ba mayor_seg
 
 iguales:
 	add %r14, 4, %r14
-	add %r0, 4, %r14
+	add %r0, %r0, %r28
+	ld %r28, %r14
+	ba terminar
+
+mayor_prim:
+	add %r14, 4, %r14
+	add %r0, 1, %r28
+	ld %r28, %r14
+	ba terminar
+
+mayor_seg:
+	add %r14,4, %r14
+	add %r0, 2, %r28
+	ld %r28, %r14
 	ba terminar
 
 terminar:
 	jmpl %r29 + 4, %r0
 
-num1 : A563CB01h ! 1010 0101 0110 0011 1100 1011 0000 0001
-num2 : A563CB02h ! 1010 0101 0110 0011 1100 1011 0000 0010
+num1 : A563CB01h ! 1|010 0101 0|110 0011 1100 1011 0000 0001
+num2 : A563CB02h ! 1|010 0101 0|110 0011 1100 1011 0000 0010
 stack : 5000
 resultado : 0
-! compuerta and en 1 me copia lo que hay
+
 signo: 80000000h ! 1000 0000 0000 0000...
-expediente : 7F80000h ! 0111 1111 1000 0000...
-mantiza : 007FFFFFh ! 0000 0000 0111 1111 1111 1111 1111 1111
+exponente : 7F80000h ! 0111 1111 1000 0000...
+mantiza : 007FFFFFh
+ ! 0000 0000 0111 1111 1111 1111 1111 1111
 .end
